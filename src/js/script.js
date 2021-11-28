@@ -142,7 +142,7 @@
           console.log(optionId, option);
 
           const optionSelected = formData[paramId] && formData[paramId].includes(optionId);
-          const optionImage = thisProduct.imageWrapper.querySelector("." + paramId + "-" + optionId);
+          const optionImage = thisProduct.imageWrapper.querySelector('.' + paramId + '-' + optionId);
 
           if (optionSelected) {
             if (!option.default)
