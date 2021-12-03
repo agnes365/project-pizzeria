@@ -233,7 +233,7 @@
   class Cart {
     constructor(element) {
       const thisCart = this;
-     // this.cart.products = [];
+      thisCart.products = [];
       thisCart.getElements(element);
       thisCart.initActions();
       console.log('new Cart', thisCart);
