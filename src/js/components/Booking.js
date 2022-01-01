@@ -1,4 +1,4 @@
-import { templates, select } from '../settings.js';
+import { templates, select, settings } from '../settings.js';
 import AmountWidget from './AmountWidget.js';
 import { utils } from '../utils.js';
 import DataPicker from './DatePicker.js';
@@ -9,6 +9,7 @@ class Booking {
     const thisBooking = this;
     thisBooking.render(element);
     thisBooking.initWidgets();
+    thisBooking.getData();
   }
   render(element) {
     const thisBooking = this;
@@ -29,6 +30,55 @@ class Booking {
     thisBooking.dom.hoursAmount.addEventListener('updated', function () { });
     thisBooking.datePickerWidget = new DataPicker(thisBooking.dom.datePicker);
     thisBooking.hourPickerWidget = new HourPicker(thisBooking.dom.hourPicker);
+  }
+  getData() {
+    const thisBooking = this;
+
+    const startDateParam = settings.db.dateStartParamKey + '=' + utils.dateToStr(thisBooking.datePickerWidget.minDate);
+    const endDateParam = settings.db.dateEndParamKey + '=' + utils.dateToStr(thisBooking.datePickerWidget.maxDate);
+
+    const params = {
+      booking: [
+        startDateParam,
+        endDateParam
+      ],
+      eventsCurrent: [
+        settings.db.notRepeatParam,
+        startDateParam,
+        endDateParam
+      ],
+      eventsRepeat: [
+        settings.db.repeatParam,
+        endDateParam
+      ]
+    };
+
+    const urls = {
+      booking: settings.db.url + '/' + settings.db.bookings + '?' + params.booking.join('&'),
+      eventsCurrent: settings.db.url + '/' + settings.db.events + '?' + params.eventsCurrent.join('&'),
+      eventsRepeat: settings.db.url + '/' + settings.db.events + '?' + params.eventsRepeat.join('&'),
+    };
+
+    Promise.all([
+      fetch(urls.booking),
+      fetch(urls.eventsCurrent),
+      fetch(urls.eventsRepeat),
+    ])
+      .then(function (allResponses) {
+        const bookingsResponse = allResponses[0];
+        const eventsCurrentResponse = allResponses[1];
+        const eventsRepeatResponse = allResponses[2];
+        return Promise.all([
+          bookingsResponse.json(),
+          eventsCurrentResponse.json(),
+          eventsRepeatResponse.json()
+        ])
+      })
+      .then(function ([bookings, eventsCurrent, eventsRepeat]) {
+        console.log(bookings);
+        console.log(eventsCurrent);
+        console.log(eventsRepeat);
+      })
   }
 }
 export default Booking;
