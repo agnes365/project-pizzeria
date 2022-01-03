@@ -10,6 +10,7 @@ class Booking {
     thisBooking.render(element);
     thisBooking.initWidgets();
     thisBooking.getData();
+    thisBooking.selectedTable = 0;
   }
   render(element) {
     const thisBooking = this;
@@ -22,6 +23,7 @@ class Booking {
     thisBooking.dom.datePicker = thisBooking.dom.wrapper.querySelector(select.widgets.datePicker.wrapper);
     thisBooking.dom.hourPicker = thisBooking.dom.wrapper.querySelector(select.widgets.hourPicker.wrapper);
     thisBooking.dom.tables = thisBooking.dom.wrapper.querySelectorAll(select.booking.tables);
+    thisBooking.dom.tablesWrapper = thisBooking.dom.wrapper.querySelector(select.booking.tablesWrapper);
   }
   initWidgets() {
     const thisBooking = this;
@@ -33,6 +35,9 @@ class Booking {
     thisBooking.hourPickerWidget = new HourPicker(thisBooking.dom.hourPicker);
     thisBooking.dom.wrapper.addEventListener('updated', function () {
       thisBooking.updateDOM();
+    });
+    thisBooking.dom.tablesWrapper.addEventListener('click', function (event) {
+      thisBooking.initTables(event.target);
     });
   }
   getData() {
@@ -153,6 +158,35 @@ class Booking {
         table.classList.add(classNames.booking.tableBooked);
       } else {
         table.classList.remove(classNames.booking.tableBooked);
+      }
+    }
+
+    const selected = thisBooking.dom.tablesWrapper.querySelector('.' + classNames.booking.tableSelected);
+    if (selected != null) {
+      selected.classList.remove(classNames.booking.tableSelected);
+    }
+    thisBooking.selectedTable = 0;
+  }
+  initTables(element) {
+    const thisBooking = this;
+    const tableId = element.getAttribute(settings.booking.tableIdAttribute);
+    if (typeof tableId != 'undefined') {
+      if (element.classList.contains(classNames.booking.tableBooked)) {
+        alert('Stolik jest już zajęty');
+      }
+      else {
+        const selected = thisBooking.dom.tablesWrapper.querySelector('.' + classNames.booking.tableSelected);
+        if (selected != null) {
+          selected.classList.remove(classNames.booking.tableSelected);
+        }
+
+        if (thisBooking.selectedTable != parseInt(tableId)) {
+          thisBooking.selectedTable = parseInt(tableId);
+          element.classList.add(classNames.booking.tableSelected);
+        }
+        else {
+          thisBooking.selectedTable = 0;
+        }
       }
     }
   }
