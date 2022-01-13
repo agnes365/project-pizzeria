@@ -27,13 +27,13 @@
 }
 
 .box h2,
-span {
+.box span {
   color: $color-light;
   margin: 0;
 }
 
 .box-slide h2,
-span {
+.box span {
   transition: 1s;
   transform: translateY(0px);
 }
