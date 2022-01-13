@@ -7,10 +7,12 @@
   <title>Pizzeria</title>
   <link href="https://fonts.googleapis.com/css?family=Lato:400,300i,700%7COswald:300,500,700&amp;subset=latin-ext" rel="stylesheet">
   <link href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" >
   <link rel="stylesheet" href="vendor/range-slider.min.css">
+  <link rel="stylesheet" href="vendor/flickity.min.css" media="screen">
   <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
 
   <header class="header">
@@ -21,9 +23,10 @@
           <h2 class="logo__subtitle">the best homemade Italian food</h2>
         </div>
         <div class="main-nav">
+          <a href="#home">Home</a>
           <a href="#order">Order</a>
           <a href="#booking">Booking</a>
-      </div>
+        </div>
         <div id="cart" class="cart">
           <div class="cart__summary">
             <span class="cart__total-number">0</span>
@@ -61,6 +64,9 @@
     </div>
   </header>
   <div id="pages">
+    <section id="home">
+      <div class="home-wrapper container"></div>
+    </section>
     <section id="order">
       <div id="product-list" class="product-list container"></div>
     </section>
@@ -175,6 +181,7 @@
 
     </article> <!-- .product -->
   </script>
+
   <script id="template-booking-widget" type="text/x-handlebars-template">
     <div class="booking-widget">
       <h2 class="page__title no-spacing">Book a table</h2>
@@ -241,9 +248,74 @@
     </div>
   </script>
 
+  <script id="template-home-widget" type="text/x-handlebars-template">
+    <div class="home">
+      <section class="boxes">
+        <div class="box box-order">
+          <a href="#order">
+            <div class="box-slide">
+              <h2>ORDER ONLINE</h2>
+              <span class="hide">Delicious food delivered to your door</span>
+            </div>
+          </a>
+        </div>
+        <div class="box box-book">
+            <a href="#booking">
+            <div class="box-slide">
+              <h2>BOOK A TABLE</h2>
+              <span class="hide">Book a table now</span>
+            </div>
+          </a>
+        </div>   
+        <div class="box box-open">
+          <div>
+            <h2>OPENING HOURS:</h2>
+            <span>MON-SUN, 12PM - 11PM</span>
+          </div>
+        </div>
+      </section>
+      <section>
+        <div class="comments">
+          {{#each comments}}
+          <div class="carousel-comment">
+            <div class="comment-image">
+              <img src="{{ img }}">
+            </div>
+            <div class="comment-description">
+              <h4>{{ title }}</h4>
+              <p>{{ message }}</p>
+              <p class="comment-author">~ {{ author }}</p>
+            </div>
+          </div>
+          {{/each}}
+        </div>
+      </section>
+
+      <section class="gallery">
+        <ul class="gallery-container">
+          {{#each gallery}}
+          <li class="gallery-item">
+            <img src="{{ img }}">
+            <ul class="gallery-links">
+              <li>
+                <a class="hear" href="#"><i class="fas fa-heart fa-2x"></i></a>
+              </li>
+              <li>
+                <a class="share" href="#"><i class="fas fa-share-alt fa-2x"></i></a>
+              </li>
+            </ul>
+          </li>
+          {{/each}}
+        </ul>
+        <a href="#">View more on Instagram</a>
+      </section>
+    </div>
+  </script>
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.1.0/handlebars.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
   <script src="vendor/range-slider.min.js"></script>
-  <script src="js/app.js"type="module"></script>
+  <script src="vendor/flickity.pkgd.min.js"></script>
+  <script src="js/app.js" type="module"></script>
 </body>
 </html>
